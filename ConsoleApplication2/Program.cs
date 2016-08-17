@@ -101,6 +101,7 @@ namespace ConsoleApplication2
             }
 
             Color("Loading Game Information...", ConsoleColor.White);
+
             StartGame();
               
           
@@ -881,7 +882,7 @@ namespace ConsoleApplication2
                     Thread.Sleep(200);
                     Color("Processing game stats...", ConsoleColor.White);
                     game = false;
-                    Thread.Sleep(60000);
+                    Task.Delay(40000).Wait();
                     var games = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, username.Id).Games.ToList();
 
                     int i = 1;
@@ -897,12 +898,12 @@ namespace ConsoleApplication2
                     var FellowGames2 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[2]).Games.ToList()[0];
                     var FellowGames3 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[3]).Games.ToList()[0];
                     var FellowGames4 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[4]).Games.ToList()[0];
-                    Thread.Sleep(200);
+                    Task.Delay(1000).Wait();
                     var user1 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[1].ToString())[Fellow[1].ToString()].Name;
                     var user2 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[2].ToString())[Fellow[2].ToString()].Name;
                     var user3 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[3].ToString())[Fellow[3].ToString()].Name;
                     var user4 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[4].ToString())[Fellow[4].ToString()].Name;
-                    Thread.Sleep(200);
+                    Task.Delay(1000).Wait();
                     string ten = "▓▓▓▓▓▓▓▓▓▓";
 
 
@@ -953,7 +954,7 @@ namespace ConsoleApplication2
                     Color("• True Damage Taken: " + games[0].Stats.TrueDamageTaken, ConsoleColor.Magenta);
                     Color("• Total Damage Taken: " + games[0].Stats.TotalDamageTaken, ConsoleColor.Magenta);
                     Color(" ", ConsoleColor.Magenta);
-                    Color("                              -    Damaga Stats    -", ConsoleColor.Magenta);
+                    Color("                              -    Damage Stats    -", ConsoleColor.Magenta);
                     Color(" ", ConsoleColor.Magenta);
                     Color("You (" + username.Name + "):", ConsoleColor.DarkMagenta);
                     Color(" ", ConsoleColor.Magenta);
