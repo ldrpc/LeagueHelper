@@ -8,6 +8,7 @@ using RiotApi.Net.RestClient.Configuration;
 using RiotApi.Net.RestClient;
 using RiotApi.Net.RestClient.Dto.League;
 using RiotApi.Net.RestClient.Helpers;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using HtmlAgilityPack;
 
@@ -72,6 +73,7 @@ namespace ConsoleApplication2
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             Console.WriteLine("Welcome to ldrpc's League Stats");
             Console.WriteLine("Settings Located at: " + config.FilePath);
+            game = false;
             Thread.Sleep(500);
             if (config.AppSettings.Settings["Username"] == null)
             {
@@ -90,16 +92,15 @@ namespace ConsoleApplication2
 
 
 
-            } catch
+            }
+            catch
             {
                 Color("Username " + config.AppSettings.Settings["Username"].Value + " seems to be incorrect", ConsoleColor.Red);
                 String strl = Console.ReadLine();
-          
+
             }
-            Thread.Sleep(200);
 
             Color("Loading Game Information...", ConsoleColor.White);
-
             StartGame();
               
           
@@ -107,7 +108,7 @@ namespace ConsoleApplication2
 
 
             }
-        public static void StartGame()
+        public async static void StartGame()
         {
 
             try
@@ -184,10 +185,12 @@ namespace ConsoleApplication2
                     {
                         string champ = riotClient.LolStaticData.GetChampionById(RiotApiConfig.Regions.NA, (int)item.ChampionId).Name;
                         ChampionsRed.Add(item.SummonerName, riotClient.LolStaticData.GetChampionById(RiotApiConfig.Regions.NA, (int)item.ChampionId).Name);
+                        String rank = Rank(item.SummonerId, item.TeamId);
+                        Task.Delay(4000).Wait();
                         if (Red1 == "" && Red2 == "" && Red3 == "" && Red4 == "" && Red5 == "")
                         {
                             Red1n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+                          
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Red1 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -223,7 +226,7 @@ namespace ConsoleApplication2
                         else if (Red1 != "" && Red2 == "" && Red3 == "" && Red4 == "" && Red5 == "")
                         {
                             Red2n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+                           
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Red2 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -258,7 +261,7 @@ namespace ConsoleApplication2
                         else if (Red1 != "" && Red2 != "" && Red3 == "" && Red4 == "" && Red5 == "")
                         {
                             Red3n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+                         
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Red3 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -293,7 +296,7 @@ namespace ConsoleApplication2
                         else if (Red1 != "" && Red2 != "" && Red3 != "" && Red4 == "" && Red5 == "")
                         {
                             Red4n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+                       
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Red4 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -328,7 +331,7 @@ namespace ConsoleApplication2
                         else if (Red1 != "" && Red2 != "" && Red3 != "" && Red4 != "" && Red5 == "")
                         {
                             Red5n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+                            
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Red5 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -367,10 +370,12 @@ namespace ConsoleApplication2
                     {
                         string champ = riotClient.LolStaticData.GetChampionById(RiotApiConfig.Regions.NA, (int)item.ChampionId).Name;
                         ChampionsBlue.Add(item.SummonerName, riotClient.LolStaticData.GetChampionById(RiotApiConfig.Regions.NA, (int)item.ChampionId).Name);
+                        String rank = Rank(item.SummonerId, item.TeamId);
+                        Task.Delay(4000).Wait();
                         if (Blue1 == "" && Blue2 == "" && Blue3 == "" && Blue4 == "" && Blue5 == "")
                         {
                             Blue1n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
+
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Blue1 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -406,7 +411,6 @@ namespace ConsoleApplication2
                         else if (Blue1 != "" && Blue2 == "" && Blue3 == "" && Blue4 == "" && Blue5 == "")
                         {
                             Blue2n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Blue2 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -436,12 +440,12 @@ namespace ConsoleApplication2
                             else
                             {
                                 Blue2 = item.SummonerName + " - Unknown - " + champ + " - " + rank;
+                                Blue2Name.Add(item.SummonerName, "Unknown");
                             }
                         }
                         else if (Blue1 != "" && Blue2 != "" && Blue3 == "" && Blue4 == "" && Blue5 == "")
                         {
                             Blue3n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Blue3 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -476,7 +480,6 @@ namespace ConsoleApplication2
                         else if (Blue1 != "" && Blue2 != "" && Blue3 != "" && Blue4 == "" && Blue5 == "")
                         {
                             Blue4n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Blue4 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -511,7 +514,6 @@ namespace ConsoleApplication2
                         else if (Blue1 != "" && Blue2 != "" && Blue3 != "" && Blue4 != "" && Blue5 == "")
                         {
                             Blue5n = item.SummonerName;
-                            String rank = Rank(item.SummonerId, item.TeamId);
                             if (item.Spell1Id == 12 || item.Spell2Id == 12)
                             {
                                 Blue5 = item.SummonerName + " - Top - " + champ + " - " + rank;
@@ -548,6 +550,7 @@ namespace ConsoleApplication2
                     }
                 }
 
+                Thread.Sleep(500);
 
                 Color("----------------------------- [ Game Info ] -----------------------------", ConsoleColor.Magenta);
                 Color("Game ID: " + current.GameId, ConsoleColor.Magenta);
@@ -727,8 +730,8 @@ namespace ConsoleApplication2
                             Color("4. " + summary64, ConsoleColor.Yellow);
                         }
                         Color("------------------------------------------------------------------------------", ConsoleColor.Magenta);
-                        Color("Refreshing game status in 60 seconds", ConsoleColor.White);
-                        Thread.Sleep(60000);
+                        Color("Refreshing game status in 120 seconds", ConsoleColor.White);
+                        Thread.Sleep(120000);
                         StartGame();
                     }
                     else if (userteam == 200)
@@ -869,7 +872,8 @@ namespace ConsoleApplication2
                 {
                     Color("Player " + username.Name + " is currently not in a match.", ConsoleColor.Red);
                     Color("Checking again in 15 seconds!", ConsoleColor.White);
-                    Thread.Sleep(15000);
+                    
+                   Thread.Sleep(15000);
                     StartGame();
                 } else if (game == true)
                 {
@@ -877,6 +881,7 @@ namespace ConsoleApplication2
                     Thread.Sleep(200);
                     Color("Processing game stats...", ConsoleColor.White);
                     game = false;
+                    Thread.Sleep(60000);
                     var games = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, username.Id).Games.ToList();
 
                     int i = 1;
@@ -892,12 +897,12 @@ namespace ConsoleApplication2
                     var FellowGames2 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[2]).Games.ToList()[0];
                     var FellowGames3 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[3]).Games.ToList()[0];
                     var FellowGames4 = riotClient.Game.GetRecentGamesBySummonerId(RiotApiConfig.Regions.NA, Fellow[4]).Games.ToList()[0];
-
+                    Thread.Sleep(200);
                     var user1 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[1].ToString())[Fellow[1].ToString()].Name;
                     var user2 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[2].ToString())[Fellow[2].ToString()].Name;
                     var user3 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[3].ToString())[Fellow[3].ToString()].Name;
                     var user4 = riotClient.Summoner.GetSummonersById(RiotApiConfig.Regions.NA, Fellow[4].ToString())[Fellow[4].ToString()].Name;
-
+                    Thread.Sleep(200);
                     string ten = "▓▓▓▓▓▓▓▓▓▓";
 
 
@@ -920,13 +925,21 @@ namespace ConsoleApplication2
                     Color("• Number of Towers Destroyed: " + games[0].Stats.TurretsKilled, ConsoleColor.Magenta);
                     Color("• Number of Minions Killed: " + games[0].Stats.MinionsKilled, ConsoleColor.Magenta);
                     Color("• Number of Neutral Minions Killed: " + games[0].Stats.NeutralMinionsKilled, ConsoleColor.Magenta);
-                    Color("• Friendly Jungle: " + games[0].Stats.NeutralMinionsKilledYourJungle + " - " + Decimal.Divide(games[0].Stats.NeutralMinionsKilledYourJungle, games[0].Stats.NeutralMinionsKilledYourJungle + games[0].Stats.NeutralMinionsKilledEnemyJungle) * 100 + "% of Total Neutral Minions Killed", ConsoleColor.Magenta);
-                    Color("• Enemy Jungle: " + games[0].Stats.NeutralMinionsKilledEnemyJungle + " - " + Decimal.Divide(games[0].Stats.NeutralMinionsKilledEnemyJungle, games[0].Stats.NeutralMinionsKilledYourJungle + games[0].Stats.NeutralMinionsKilledEnemyJungle) * 100 + "% of Total Neutral Minions Killed", ConsoleColor.Magenta);
+                    if (games[0].Stats.NeutralMinionsKilled == 0)
+                    {
+                        Color("• Friendly Jungle: 0", ConsoleColor.Magenta);
+                        Color("• Enemy Jungle: 0", ConsoleColor.Magenta);
+                    }
+                    else if (games[0].Stats.NeutralMinionsKilled != 0)
+                    {
+                        Color("• Friendly Jungle: " + games[0].Stats.NeutralMinionsKilledYourJungle + " - " + Decimal.Divide(games[0].Stats.NeutralMinionsKilledYourJungle, games[0].Stats.NeutralMinionsKilled) * 100 + "% of Total Neutral Minions Killed", ConsoleColor.Magenta);
+                        Color("• Enemy Jungle: " + games[0].Stats.NeutralMinionsKilledEnemyJungle + " - " + Decimal.Divide(games[0].Stats.NeutralMinionsKilledEnemyJungle, games[0].Stats.NeutralMinionsKilledYourJungle + games[0].Stats.NeutralMinionsKilledEnemyJungle) * 100 + "% of Total Neutral Minions Killed", ConsoleColor.Magenta);
+                    }
                     Color("• Amount of Killing Sprees: " + games[0].Stats.KillingSprees, ConsoleColor.Magenta);
                     Color("• Amount of Double Kills: " + games[0].Stats.DoubleKills, ConsoleColor.Magenta);
                     Color("• Amount of Triple Kills: " + games[0].Stats.TripleKills, ConsoleColor.Magenta);
                     Color("• Amount of Quadra Kills: " + games[0].Stats.QuadraKills, ConsoleColor.Magenta);
-                    Color("• Amount of Penta Kills: " + games[0].Stats.PentaKills, ConsoleColor.Magenta);Color(" ", ConsoleColor.Magenta);
+                    Color("• Amount of Penta Kills: " + games[0].Stats.PentaKills, ConsoleColor.Magenta); Color(" ", ConsoleColor.Magenta);
                     if (games[0].Stats.WardPlaced < 14)
                         Color("• Total Wards Placed: " + games[0].Stats.WardPlaced + " (Low amount detected, try to place more next time!)", ConsoleColor.Magenta);
                     if (games[0].Stats.WardPlaced > 13)
